@@ -11,15 +11,22 @@
     <div class="tsoi-quote" style="top: 15%; left: -10%;">Перемен требуют наши сердца...</div>
     <div class="tsoi-quote" style="bottom: 20%; right: -15%; font-size: 3rem;">Хочу перемен!</div>
 
+    <!-- Фиксированная иконка корзины -->
+    <a href="cart.html" class="cart-icon-fixed" title="Корзина">
+        🛒
+        <span class="cart-badge" id="cart-count">0</span>
+    </a>
+
     <!-- Header -->
     <header class="site-header">
-        <div class="container">
-            <h1>🎸 МУЗЫКАЛЬНЫЙ МАГАЗИН "КИНО" 🎸</h1>
-            <nav class="site-nav">
-                <a href="index.html" class="active">КАТАЛОГ</a>
-                <a href="cart.html">КОРЗИНА <span id="cart-count">(0)</span></a>
-                <a href="demo.html">ДЕМО</a>
-            </nav>
+        <div class="container header-container">
+            <div class="header-left">
+                <h1>🎸 МУЗЫКАЛЬНЫЙ МАГАЗИН "КИНО" 🎸</h1>
+                <nav class="site-nav">
+                    <a href="index.html" class="active">КАТАЛОГ</a>
+                    <a href="#news">НОВОСТИ</a>
+                </nav>
+            </div>
         </div>
     </header>
 
@@ -79,6 +86,14 @@
             <p style="color: var(--light-grey);">Попробуйте изменить фильтры или поисковый запрос</p>
         </div>
     </main>
+
+    <!-- News Section -->
+    <section id="news" class="container" style="padding-top: 50px; padding-bottom: 50px;">
+        <h2 class="text-center">НОВОСТИ</h2>
+        <div class="text-center" style="margin-top: 30px;">
+            <p>Здесь скоро появятся новости.</p>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="site-footer">

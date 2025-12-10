@@ -22,7 +22,7 @@ class ShopAPI {
         category: 'guitars',
         stockStatus: 'LOW',
         type: 'physical',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Гитара+Аккорд'
+        image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '2',
@@ -33,7 +33,7 @@ class ShopAPI {
         category: 'vinyl',
         stockStatus: 'IN_STOCK',
         type: 'digital',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Группа+Крови'
+        image: 'https://images.unsplash.com/photo-1619983081563-430f63602796?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '3',
@@ -44,7 +44,7 @@ class ShopAPI {
         category: 'synths',
         stockStatus: 'LOW',
         type: 'physical',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Yamaha+DX7'
+        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '4',
@@ -55,7 +55,7 @@ class ShopAPI {
         category: 'merch',
         stockStatus: 'IN_STOCK',
         type: 'physical',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Футболка+Перемен'
+        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '5',
@@ -66,7 +66,7 @@ class ShopAPI {
         category: 'vinyl',
         stockStatus: 'IN_STOCK',
         type: 'digital',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Звезда'
+        image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '6',
@@ -77,7 +77,7 @@ class ShopAPI {
         category: 'guitars',
         stockStatus: 'LOW',
         type: 'physical',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Fender'
+        image: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '7',
@@ -88,7 +88,7 @@ class ShopAPI {
         category: 'merch',
         stockStatus: 'IN_STOCK',
         type: 'physical',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Цой+жив'
+        image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '8',
@@ -99,7 +99,7 @@ class ShopAPI {
         category: 'vinyl',
         stockStatus: 'LOW',
         type: 'digital',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/ECECEC?text=Кассета'
+        image: 'https://images.unsplash.com/photo-1594623930572-300a3011d9ae?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '9',
@@ -110,7 +110,7 @@ class ShopAPI {
         category: 'tickets',
         stockStatus: 'IN_STOCK',
         type: 'digital',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/FFD700?text=Билет+КИНО'
+        image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '10',
@@ -121,7 +121,7 @@ class ShopAPI {
         category: 'tickets',
         stockStatus: 'LOW',
         type: 'digital',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/FFD700?text=VIP'
+        image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop&auto=format&q=80'
       },
       {
         id: '11',
@@ -132,7 +132,18 @@ class ShopAPI {
         category: 'tickets',
         stockStatus: 'IN_STOCK',
         type: 'digital',
-        image: 'https://via.placeholder.com/350x250/1C1C1C/FFD700?text=Онлайн'
+        image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=300&fit=crop&auto=format&q=80'
+      },
+      {
+        id: '12',
+        name: 'Лёха',
+        description: 'Легендарный Лёха. Эксклюзивная позиция, есть только у нас!',
+        price: 999999,
+        quantity: 1,
+        category: null,
+        stockStatus: 'LOW',
+        type: 'physical',
+        image: 'assets/images/Леха.jpg'
       }
     ];
   }
@@ -365,7 +376,8 @@ class ShopAPI {
       { id: 'pigeon-standard', name: 'Голубь почтовый (2-3 дня)', cost: 800 },
       { id: 'pigeon-express', name: 'Экспресс-голубь (в тот же день)', cost: 2500 },
       { id: 'pigeon-vip', name: 'VIP голубь с GPS-трекером', cost: 5000 },
-      { id: 'free-over-50k', name: 'Бесплатный голубь при заказе > 50,000₽', cost: 0, threshold: 50000 }
+      { id: 'leha-delivery', name: 'Лёха принесёт (1-2 часа)', cost: 1500 },
+      { id: 'free-over-50k', name: 'Бесплатный голубь при заказе > 50,000₸', cost: 0, threshold: 50000 }
     ];
 
     if (USE_MOCK) {

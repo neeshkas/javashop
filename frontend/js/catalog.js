@@ -53,9 +53,13 @@ async function loadProducts() {
 function applyFilters() {
   filteredProducts = allProducts.filter(product => {
     // Фильтр по категории
-    if (currentCategory !== 'all' && product.category !== currentCategory) {
-      return false;
+    if (currentCategory !== 'all') {
+      // Если выбрана конкретная категория, товары без категории (null) не показываем
+      if (product.category !== currentCategory) {
+        return false;
+      }
     }
+    // Если категория "all", показываем всё включая товары с category: null
 
     // Поиск по названию
     if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -103,7 +107,7 @@ function renderProducts() {
       <p style="color: var(--concrete); font-size: 0.9rem; min-height: 60px;">
         ${product.description.substring(0, 80)}${product.description.length > 80 ? '...' : ''}
       </p>
-      <div class="price">₽${product.price.toLocaleString()}</div>
+      <div class="price">₸${product.price.toLocaleString()}</div>
       <div class="stock-status ${getStockStatusClass(product.stockStatus)}">
         ${getStockStatusText(product.stockStatus)}
       </div>
@@ -182,7 +186,7 @@ function updateCartCount() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartCountEl = document.getElementById('cart-count');
   if (cartCountEl) {
-    cartCountEl.textContent = `(${totalItems})`;
+    cartCountEl.textContent = totalItems;
   }
 }
 
@@ -249,6 +253,19 @@ function initEventListeners() {
     applyFilters();
     renderProducts();
   });
+
+  // Плавный скролл для ссылки "НОВОСТИ"
+  const newsLink = document.querySelector('a[href="#news"]');
+  if (newsLink) {
+    newsLink.addEventListener('click', (e) => {
+      e.preventDefault(); // Предотвратить стандартный переход
+      const targetId = newsLink.getAttribute('href').substring(1); // Получить id цели
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
 }
 
 // CSS анимации для уведомлений

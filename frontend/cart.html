@@ -10,14 +10,18 @@
     <!-- Цитата Цоя на фоне -->
     <div class="tsoi-quote" style="top: 20%; right: -5%;">Мы ждём перемен...</div>
 
+    <!-- Фиксированная иконка корзины -->
+    <a href="cart.html" class="cart-icon-fixed" title="Корзина">
+        🛒
+        <span class="cart-badge" id="cart-count">0</span>
+    </a>
+
     <!-- Header -->
     <header class="site-header">
         <div class="container">
             <h1>🎸 МУЗЫКАЛЬНЫЙ МАГАЗИН "КИНО" 🎸</h1>
             <nav class="site-nav">
-                <a href="index.html">КАТАЛОГ</a>
-                <a href="cart.html" class="active">КОРЗИНА</a>
-                <a href="demo.html">ДЕМО</a>
+                <a href="index.html" class="active">ДОМОЙ</a>
             </nav>
         </div>
     </header>
@@ -52,14 +56,14 @@
                 <h3 style="color: var(--cigarette-yellow); margin-bottom: 20px;">СТОРОНА Б: Оформление</h3>
                 <div class="divider"></div>
 
-                <!-- Promotion -->
-                <div style="margin: 30px 0;">
-                    <label style="display: block; margin-bottom: 10px; color: var(--white); font-weight: bold;">
-                        Промо-акция:
+                <!-- Promotion (автоматический выбор лучшей) -->
+                <div style="margin: 30px 0; padding: 20px; background: var(--black); border: 2px solid var(--street-yellow);">
+                    <label style="display: block; margin-bottom: 10px; color: var(--street-yellow); font-weight: bold;">
+                        🎁 Промо-акция (применяется автоматически):
                     </label>
-                    <select id="promotion-select" class="select-typewriter">
-                        <option value="none">Загрузка...</option>
-                    </select>
+                    <p id="promo-info" style="color: var(--light-grey); font-size: 0.95rem;">
+                        Ищем лучшую скидку для вас...
+                    </p>
                 </div>
 
                 <!-- Tax (автоматический расчёт) -->
@@ -68,7 +72,7 @@
                         💰 Налог (рассчитывается автоматически):
                     </label>
                     <p id="tax-info" style="color: var(--light-grey); font-size: 0.95rem;">
-                        Прогрессивная шкала: до 10,000₽ → 5%, до 50,000₽ → 10%, свыше 50,000₽ → 15%
+                        Прогрессивная шкала: до 10,000₸ → 5%, до 50,000₸ → 10%, свыше 50,000₸ → 15%
                     </p>
                 </div>
 
@@ -91,26 +95,26 @@
                 <div id="price-breakdown" style="font-family: var(--font-main); font-size: 1.1rem; line-height: 2;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                         <span>Товары:</span>
-                        <span id="items-total">₽0</span>
+                        <span id="items-total">₸0</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--soviet-red);">
                         <span>Скидка:</span>
-                        <span id="discount-amount">-₽0</span>
+                        <span id="discount-amount">-₸0</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                         <span>Налог:</span>
-                        <span id="tax-amount">+₽0</span>
+                        <span id="tax-amount">+₸0</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                         <span>Доставка:</span>
-                        <span id="shipping-cost">+₽0</span>
+                        <span id="shipping-cost">+₸0</span>
                     </div>
 
                     <div class="divider" style="margin: 20px 0;"></div>
 
                     <div style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold; color: var(--soviet-red);">
                         <span>ВСЕГО:</span>
-                        <span id="total-amount">₽0</span>
+                        <span id="total-amount">₸0</span>
                     </div>
                 </div>
 
@@ -129,6 +133,24 @@
             <p>&copy; 2025 Музыкальный Магазин "Перемен". В память о Викторе Цое и группе "Кино".</p>
         </div>
     </footer>
+
+    <!-- Delivery Tracking Modal -->
+    <div id="pigeon-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 10000; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 80%; max-width: 900px; background: var(--charcoal); padding: 40px; border: 5px solid var(--soviet-red); text-align: center;">
+            <h2 id="modal-title" style="margin-bottom: 30px;">🕊️ Голубь в Пути! 🕊️</h2>
+            <p id="modal-subtitle" style="color: var(--light-grey); margin-bottom: 30px;">Ваш заказ доставляется специально обученным почтовым голубем.</p>
+
+            <!-- Simple animated route -->
+            <div id="pigeon-map" style="position: relative; width: 100%; height: 400px; background: #1C1C1C; border: 2px solid var(--concrete); margin-bottom: 30px; overflow: hidden;">
+            </div>
+
+            <p id="pigeon-status" style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--street-yellow); margin-bottom: 30px;">
+                Статус: Готовимся к отправке...
+            </p>
+
+            <button id="close-pigeon-modal" class="btn-stamp">Закрыть</button>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="js/api.js"></script>

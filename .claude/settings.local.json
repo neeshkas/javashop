@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(javac:*)",
+      "Bash(cat:*)",
+      "Bash(java:*)",
+      "Bash(mkdir:*)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
