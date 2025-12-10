@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Музыкальный Магазин "КИНО" - Каталог</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Цитата Цоя на фоне -->
+    <div class="tsoi-quote" style="top: 15%; left: -10%;">Перемен требуют наши сердца...</div>
+    <div class="tsoi-quote" style="bottom: 20%; right: -15%; font-size: 3rem;">Хочу перемен!</div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <h1>🎸 МУЗЫКАЛЬНЫЙ МАГАЗИН "КИНО" 🎸</h1>
+            <nav class="site-nav">
+                <a href="index.html" class="active">КАТАЛОГ</a>
+                <a href="cart.html">КОРЗИНА <span id="cart-count">(0)</span></a>
+                <a href="demo.html">ДЕМО</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>"Мы ждём перемен..."</h2>
+            <button class="btn-stamp" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">
+                СМОТРЕТЬ КАТАЛОГ
+            </button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container" id="catalog">
+        <!-- Категории -->
+        <section class="torn-edge">
+            <h2 class="text-center">ВЫБЕРИТЕ КАТЕГОРИЮ</h2>
+            <div class="category-tabs text-center" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px;">
+                <button class="btn-stamp active" data-category="all">ВСЁ</button>
+                <button class="btn-stamp" data-category="guitars">ГИТАРЫ</button>
+                <button class="btn-stamp" data-category="vinyl">ВИНИЛ</button>
+                <button class="btn-stamp" data-category="synths">СИНТЕЗАТОРЫ</button>
+                <button class="btn-stamp" data-category="tickets">БИЛЕТЫ 🎫</button>
+                <button class="btn-stamp" data-category="merch">МЕРЧ</button>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Поиск -->
+        <section class="mt-4 mb-4">
+            <input type="text" id="search-input" class="input-typewriter" placeholder="Поиск по названию...">
+        </section>
+
+        <!-- Сортировка -->
+        <section class="mb-4">
+            <select id="sort-select" class="select-typewriter">
+                <option value="name-asc">По названию (А-Я)</option>
+                <option value="name-desc">По названию (Я-А)</option>
+                <option value="price-asc">По цене (возрастанию)</option>
+                <option value="price-desc">По цене (убыванию)</option>
+            </select>
+        </section>
+
+        <!-- Loader -->
+        <div id="loader" class="loader-vinyl hidden"></div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="product-grid">
+            <!-- Products will be rendered here by JS -->
+        </div>
+
+        <!-- Сообщение если товаров нет -->
+        <div id="no-products" class="hidden text-center mt-4 mb-4">
+            <h3>Товары не найдены</h3>
+            <p style="color: var(--light-grey);">Попробуйте изменить фильтры или поисковый запрос</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="graffiti" style="font-size: 1.5rem; margin-bottom: 15px;">ЦОЙ ЖИВ</p>
+            <p>&copy; 2025 Музыкальный Магазин "КИНО". В память о Викторе Цое и группе "Кино".</p>
+            <p style="margin-top: 10px; font-size: 0.85rem; color: var(--concrete);">
+                Powered by Java + REST API
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/catalog.js"></script>
+</body>
+</html>

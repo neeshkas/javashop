@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Демо - Музыкальный Магазин "Перемен"</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <h1>🎸 МУЗЫКАЛЬНЫЙ МАГАЗИН "ПЕРЕМЕН" 🎸</h1>
+            <nav class="site-nav">
+                <a href="index.html">КАТАЛОГ</a>
+                <a href="cart.html">КОРЗИНА</a>
+                <a href="admin.html">АДМИН</a>
+                <a href="demo.html" class="active">ДЕМО</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="margin-top: 60px; margin-bottom: 60px;">
+        <h2 style="text-align: center; margin-bottom: 40px;">SOUND CHECK - Демо Акций</h2>
+
+        <!-- Promotion Demo -->
+        <div class="torn-edge">
+            <h3 style="color: var(--cigarette-yellow); margin-bottom: 20px;">ИНТЕРАКТИВНАЯ ДЕМОНСТРАЦИЯ ПРОМО-АКЦИЙ</h3>
+            <div class="divider"></div>
+
+            <div style="margin-top: 30px;">
+                <!-- Product Selection -->
+                <div class="mb-3">
+                    <label style="display: block; margin-bottom: 10px; color: var(--white); font-weight: bold;">
+                        Выбери товар:
+                    </label>
+                    <select id="demo-product" class="select-typewriter">
+                        <option value="25000">Гитара "Аккорд" (₽25,000)</option>
+                        <option value="2500">Винил "Группа Крови" (₽2,500)</option>
+                        <option value="150000">Синтезатор Yamaha DX7 (₽150,000)</option>
+                        <option value="1200">Футболка "Перемен!" (₽1,200)</option>
+                    </select>
+                </div>
+
+                <!-- Quantity -->
+                <div class="mb-3">
+                    <label style="display: block; margin-bottom: 10px; color: var(--white); font-weight: bold;">
+                        Количество: <span id="qty-display">1</span>
+                    </label>
+                    <input
+                      type="range"
+                      id="demo-quantity"
+                      min="1"
+                      max="10"
+                      value="1"
+                      style="width: 100%; height: 8px; background: var(--concrete); cursor: pointer;"
+                    >
+                </div>
+
+                <!-- Promotion Selection -->
+                <div class="mb-4">
+                    <label style="display: block; margin-bottom: 10px; color: var(--white); font-weight: bold;">
+                        Попробуй акции:
+                    </label>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+                        <button class="btn-stamp" onclick="applyPromo('none')">БЕЗ СКИДКИ</button>
+                        <button class="btn-stamp" onclick="applyPromo('percentage-15')">СКИДКА 15%</button>
+                        <button class="btn-stamp" onclick="applyPromo('fixed-5000')">СКИДКА 5000₽</button>
+                        <button class="btn-stamp" onclick="applyPromo('bogo-half')">2-Й ПО ПОЛЦЕНЫ</button>
+                        <button class="btn-stamp" onclick="applyPromo('buy3-pay2')">3 ПО ЦЕНЕ 2</button>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Result -->
+                <div style="background: var(--black); padding: 30px; border: 3px solid var(--soviet-red); margin-top: 30px;">
+                    <h4 style="color: var(--cigarette-yellow); margin-bottom: 20px;">РЕЗУЛЬТАТ:</h4>
+
+                    <div style="font-family: var(--font-main); font-size: 1.1rem; line-height: 2;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Базовая цена:</span>
+                            <span id="result-base-price">₽0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: var(--soviet-red);">
+                            <span>Скидка (<span id="result-promo-name">-</span>):</span>
+                            <span id="result-discount">-₽0</span>
+                        </div>
+
+                        <div class="divider" style="margin: 20px 0;"></div>
+
+                        <div style="display: flex; justify-content: space-between; font-size: 1.5rem; font-weight: bold; color: var(--soviet-red);">
+                            <span>ИТОГО:</span>
+                            <span id="result-final-price">₽0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider" style="margin: 60px 0;"></div>
+
+        <!-- Tax Demo -->
+        <div class="torn-edge">
+            <h3 style="color: var(--cigarette-yellow); margin-bottom: 20px;">ДЕМОНСТРАЦИЯ НАЛОГОВ</h3>
+            <div class="divider"></div>
+
+            <div style="margin-top: 30px;">
+                <div class="mb-3">
+                    <label style="display: block; margin-bottom: 10px; color: var(--white); font-weight: bold;">
+                        Сумма (subtotal): <span id="tax-subtotal-display">₽10,000</span>
+                    </label>
+                    <input
+                      type="range"
+                      id="tax-subtotal"
+                      min="1000"
+                      max="100000"
+                      step="1000"
+                      value="10000"
+                      style="width: 100%; height: 8px; background: var(--concrete); cursor: pointer;"
+                    >
+                </div>
+
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+                    <button class="btn-stamp" onclick="applyTax('no-tax')">БЕЗ НАЛОГА</button>
+                    <button class="btn-stamp" onclick="applyTax('flat-vat-12')">НДС 12%</button>
+                    <button class="btn-stamp" onclick="applyTax('flat-vat-5')">НДС 5%</button>
+                    <button class="btn-stamp" onclick="applyTax('progressive')">ПРОГРЕССИВНЫЙ</button>
+                </div>
+
+                <div style="background: var(--black); padding: 30px; border: 3px solid var(--soviet-red); margin-top: 30px;">
+                    <h4 style="color: var(--cigarette-yellow); margin-bottom: 20px;">РЕЗУЛЬТАТ:</h4>
+                    <div style="font-size: 1.2rem; line-height: 2;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Сумма до налога:</span>
+                            <span id="tax-result-subtotal">₽0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: var(--soviet-red);">
+                            <span>Налог (<span id="tax-result-name">-</span>):</span>
+                            <span id="tax-result-amount">+₽0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="graffiti" style="font-size: 1.5rem; margin-bottom: 15px;">ЦОЙ ЖИВ</p>
+            <p>&copy; 2025 Музыкальный Магазин "Перемен". В память о Викторе Цое и группе "Кино".</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script>
+      // Demo Logic
+
+      let promotions = [];
+      let taxes = [];
+
+      // Init
+      document.addEventListener('DOMContentLoaded', async () => {
+        promotions = await ShopAPI.getPromotions();
+        taxes = await ShopAPI.getTaxPolicies();
+
+        // Event listeners
+        document.getElementById('demo-product').addEventListener('change', calculate);
+        document.getElementById('demo-quantity').addEventListener('input', (e) => {
+          document.getElementById('qty-display').textContent = e.target.value;
+          calculate();
+        });
+
+        document.getElementById('tax-subtotal').addEventListener('input', (e) => {
+          const value = parseInt(e.target.value);
+          document.getElementById('tax-subtotal-display').textContent = `₽${value.toLocaleString()}`;
+          calculateTaxDemo();
+        });
+
+        calculate();
+        calculateTaxDemo();
+      });
+
+      // Promotion Demo
+      let currentPromoId = 'none';
+
+      function applyPromo(promoId) {
+        currentPromoId = promoId;
+        calculate();
+      }
+
+      function calculate() {
+        const basePrice = parseInt(document.getElementById('demo-product').value);
+        const qty = parseInt(document.getElementById('demo-quantity').value);
+        const promo = promotions.find(p => p.id === currentPromoId);
+
+        const totalBase = basePrice * qty;
+        const totalWithPromo = ShopAPI.calculatePriceWithPromotion(basePrice, qty, promo);
+        const discount = totalBase - totalWithPromo;
+
+        document.getElementById('result-base-price').textContent = `₽${totalBase.toLocaleString()}`;
+        document.getElementById('result-promo-name').textContent = promo ? promo.name : '-';
+        document.getElementById('result-discount').textContent = `-₽${discount.toLocaleString()}`;
+        document.getElementById('result-final-price').textContent = `₽${totalWithPromo.toLocaleString()}`;
+      }
+
+      // Tax Demo
+      let currentTaxId = 'no-tax';
+
+      function applyTax(taxId) {
+        currentTaxId = taxId;
+        calculateTaxDemo();
+      }
+
+      function calculateTaxDemo() {
+        const subtotal = parseInt(document.getElementById('tax-subtotal').value);
+        const taxPolicy = taxes.find(t => t.id === currentTaxId);
+
+        const taxAmount = ShopAPI.calculateTax(subtotal, taxPolicy, false);
+
+        document.getElementById('tax-result-subtotal').textContent = `₽${subtotal.toLocaleString()}`;
+        document.getElementById('tax-result-name').textContent = taxPolicy ? taxPolicy.name : '-';
+        document.getElementById('tax-result-amount').textContent = `+₽${taxAmount.toLocaleString()}`;
+      }
+    </script>
+</body>
+</html>
