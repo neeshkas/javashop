@@ -50,7 +50,8 @@ body::before {
   height: 100%;
   background:
     linear-gradient(180deg, rgba(10, 10, 10, 0.95) 0%, rgba(28, 28, 28, 0.95) 100%),
-    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 4px);
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 2px, rgba(255, 255, 255, 0.02) 4px),
+    url('https://s1.stc.all.kpcdn.net/putevoditel/projectid_379258/images/tild3330-3135-4231-b938-633037343534__76530mfox.jpg') center/cover fixed no-repeat;
   z-index: -1;
   pointer-events: none;
   opacity: 0.95;
