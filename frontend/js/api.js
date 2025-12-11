@@ -4,8 +4,8 @@
  */
 
 // Для разработки используем mock данные (позже заменить на реальный API)
-const USE_MOCK = true;
-const API_BASE = USE_MOCK ? '' : 'http://localhost:8080/api';
+const USE_MOCK = false;
+const API_BASE = 'http://localhost:8086/api';
 
 class ShopAPI {
   /**
@@ -14,138 +14,39 @@ class ShopAPI {
   static getMockProducts() {
     return [
       {
-        id: '1',
-        name: 'Гитара "Аккорд"',
-        description: 'Советская акустическая гитара. Та самая, на которой играл Цой.',
-        price: 25000,
-        quantity: 5,
-        category: 'guitars',
-        stockStatus: 'LOW',
-        type: 'physical',
-        image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&h=300&fit=crop&auto=format&q=80'
+            "id": "1",
+            "name": "????????????? \"Fender Telecaster\"",
+            "description": "???????? ????? ? ????? ??????? ? ???????? ??????????.",
+            "price": 25000,
+            "quantity": 5,
+            "category": "guitars",
+            "stockStatus": "LOW",
+            "type": "physical",
+            "image": "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=400&h=300&fit=crop&auto=format&q=80"
       },
       {
-        id: '2',
-        name: 'Винил "КИНО - Группа Крови"',
-        description: 'Легендарный альбом 1988 года. Переиздание на виниле.',
-        price: 2500,
-        quantity: 100,
-        category: 'vinyl',
-        stockStatus: 'IN_STOCK',
-        type: 'digital',
-        image: 'https://images.unsplash.com/photo-1619983081563-430f63602796?w=400&h=300&fit=crop&auto=format&q=80'
+            "id": "2",
+            "name": "????? \"???????? - ????? ??????\"",
+            "description": "????? 1988 ????, ????????????? ?????.",
+            "price": 2500,
+            "quantity": 100,
+            "category": "vinyl",
+            "stockStatus": "IN_STOCK",
+            "type": "digital",
+            "image": "https://images.unsplash.com/photo-1619983081563-430f63602796?w=400&h=300&fit=crop&auto=format&q=80"
       },
       {
-        id: '3',
-        name: 'Синтезатор Yamaha DX7',
-        description: 'Синтезатор 80-х. На таком играли в группе "Кино".',
-        price: 150000,
-        quantity: 2,
-        category: 'synths',
-        stockStatus: 'LOW',
-        type: 'physical',
-        image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '4',
-        name: 'Футболка "Перемен!"',
-        description: 'Чёрная футболка с культовой надписью. 100% хлопок.',
-        price: 1200,
-        quantity: 50,
-        category: 'merch',
-        stockStatus: 'IN_STOCK',
-        type: 'physical',
-        image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '5',
-        name: 'Виниловая пластинка "Звезда по имени Солнце"',
-        description: 'Альбом 1989 года. Последний студийный альбом Цоя.',
-        price: 3000,
-        quantity: 30,
-        category: 'vinyl',
-        stockStatus: 'IN_STOCK',
-        type: 'digital',
-        image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '6',
-        name: 'Электрогитара Fender Stratocaster',
-        description: 'Легендарная модель. Такую использовал Юрий Каспарян.',
-        price: 85000,
-        quantity: 3,
-        category: 'guitars',
-        stockStatus: 'LOW',
-        type: 'physical',
-        image: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '7',
-        name: 'Плакат "Цой жив"',
-        description: 'Постер с культовым граффити. A1 формат.',
-        price: 500,
-        quantity: 200,
-        category: 'merch',
-        stockStatus: 'IN_STOCK',
-        type: 'physical',
-        image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '8',
-        name: 'Кассета "Начальник Камчатки"',
-        description: 'Раритетная магнитофонная кассета 1984 года.',
-        price: 5000,
-        quantity: 5,
-        category: 'vinyl',
-        stockStatus: 'LOW',
-        type: 'digital',
-        image: 'https://images.unsplash.com/photo-1594623930572-300a3011d9ae?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '9',
-        name: '🎫 Билет на трибьют-концерт КИНО',
-        description: 'Алматы, Megapolis, 15 марта 2025. Трибьют группе "Кино".',
-        price: 8000,
-        quantity: 150,
-        category: 'tickets',
-        stockStatus: 'IN_STOCK',
-        type: 'digital',
-        image: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '10',
-        name: '🎫 VIP-билет на рок-фестиваль',
-        description: 'Фестиваль памяти Цоя, Алматы. Включает встречу с музыкантами.',
-        price: 25000,
-        quantity: 20,
-        category: 'tickets',
-        stockStatus: 'LOW',
-        type: 'digital',
-        image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '11',
-        name: '🎫 Онлайн-концерт "Группа Крови"',
-        description: 'Прямой эфир из Москвы. Полное исполнение альбома "Группа Крови".',
-        price: 1500,
-        quantity: 1000,
-        category: 'tickets',
-        stockStatus: 'IN_STOCK',
-        type: 'digital',
-        image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=300&fit=crop&auto=format&q=80'
-      },
-      {
-        id: '12',
-        name: 'Лёха',
-        description: 'Легендарный Лёха. Эксклюзивная позиция, есть только у нас!',
-        price: 999999,
-        quantity: 1,
-        category: null,
-        stockStatus: 'LOW',
-        type: 'physical',
-        image: 'assets/images/Леха.jpg'
+            "id": "3",
+            "name": "?????????? Yamaha DX7",
+            "description": "FM-???? 80-?, ??????? ?????????.",
+            "price": 150000,
+            "quantity": 2,
+            "category": "synths",
+            "stockStatus": "LOW",
+            "type": "physical",
+            "image": "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=400&h=300&fit=crop&auto=format&q=80"
       }
-    ];
+];
   }
 
   // ========== PRODUCTS ==========
