@@ -100,12 +100,16 @@ function renderProducts() {
 
   noProducts.classList.add('hidden');
 
-  productGrid.innerHTML = filteredProducts.map(product => `
+  productGrid.innerHTML = filteredProducts.map(product => {
+    const description = product.description || '';
+    const isOutOfStock = product.stockStatus === 'OUT_OF_STOCK' || product.quantity <= 0;
+
+    return `
     <div class="product-card">
       <img src="${product.image}" alt="${product.name}">
       <h3>${product.name}</h3>
       <p style="color: var(--concrete); font-size: 0.9rem; min-height: 60px;">
-        ${product.description.substring(0, 80)}${product.description.length > 80 ? '...' : ''}
+        ${description.substring(0, 80)}${description.length > 80 ? '...' : ''}
       </p>
       <div class="price">₸${product.price.toLocaleString()}</div>
       <div class="stock-status ${getStockStatusClass(product.stockStatus)}">
@@ -115,12 +119,13 @@ function renderProducts() {
         class="btn-stamp"
         style="width: 100%; margin-top: 10px;"
         onclick="addToCart('${product.id}')"
-        ${product.stockStatus === 'OUT_OF_STOCK' ? 'disabled' : ''}
+        ${isOutOfStock ? 'disabled' : ''}
       >
-        ${product.stockStatus === 'OUT_OF_STOCK' ? 'НЕТ В НАЛИЧИИ' : 'КУПИТЬ'}
+        ${isOutOfStock ? 'НЕТ В НАЛИЧИИ' : 'КУПИТЬ'}
       </button>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function getStockStatusClass(status) {
@@ -154,21 +159,30 @@ function getStockStatusText(status) {
 function addToCart(productId) {
   // Получить текущую корзину из localStorage
   let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const product = allProducts.find(p => p.id === productId);
+
+  if (!product || product.quantity <= 0) {
+    showNotification('Товара нет в наличии!');
+    return;
+  }
 
   // Проверить, есть ли уже этот товар
   const existingItem = cart.find(item => item.productId === productId);
 
   if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    const product = allProducts.find(p => p.id === productId);
-    if (product) {
-      cart.push({
-        productId: product.id,
-        product: product,
-        quantity: 1
-      });
+    if (existingItem.quantity >= product.quantity) {
+      showNotification(`На складе только ${product.quantity} шт.`);
+      return;
     }
+
+    existingItem.quantity += 1;
+    existingItem.product = product;
+  } else {
+    cart.push({
+      productId: product.id,
+      product: product,
+      quantity: 1
+    });
   }
 
   // Сохранить корзину

@@ -1,0 +1,10 @@
+services:
+  javashop:
+    build:
+      context: .
+    container_name: javashop
+    environment:
+      PORT: 8086
+    ports:
+      - "8086:8086"
+    restart: unless-stopped

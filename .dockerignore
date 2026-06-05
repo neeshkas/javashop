@@ -1,0 +1,13 @@
+.git
+.idea
+bin
+out
+product
+category
+*.class
+*.iml
+reqs
+techdocs.md
+readme.md
+$1
+_ul

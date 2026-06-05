@@ -14,19 +14,29 @@ let selectedShipping = null; // from dropdown
 // ========== INIT ==========
 
 document.addEventListener('DOMContentLoaded', async () => {
-  loadCart();
-  await loadPolicies();
-  updateCartCount();
-  renderCart();
-  renderPolicySelectors();
-  initEventListeners();
-  await calculateTotal();
+  try {
+    loadCart();
+    await Promise.all([loadPolicies(), syncCartProducts()]);
+    updateCartCount();
+    renderCart();
+    renderPolicySelectors();
+    initEventListeners();
+    await calculateTotal();
+  } catch (error) {
+    console.error('Cart initialization failed:', error);
+    alert('Не удалось подключиться к серверу магазина.');
+  }
 });
 
 // ========== LOAD CART ==========
 
 function loadCart() {
-  cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  try {
+    cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  } catch (error) {
+    cart = [];
+    saveCart();
+  }
 }
 
 function saveCart() {
@@ -36,16 +46,44 @@ function saveCart() {
 // ========== LOAD POLICIES ==========
 
 async function loadPolicies() {
-  try {
-    promotions = await ShopAPI.getPromotions();
-    taxes = await ShopAPI.getTaxPolicies();
-    shippingPolicies = await ShopAPI.getShippingPolicies();
+  promotions = await ShopAPI.getPromotions();
+  taxes = await ShopAPI.getTaxPolicies();
+  shippingPolicies = await ShopAPI.getShippingPolicies();
 
-    selectedTax = taxes.find(t => t.id === 'progressive') || taxes[0];
-    selectedShipping = shippingPolicies[0] || null;
-    selectedPromotion = promotions[0] || null;
-  } catch (error) {
-    console.error('Error loading policies:', error);
+  selectedTax = taxes.find(t => t.id === 'progressive') || taxes[0] || null;
+  selectedShipping = shippingPolicies.find(s => s.id === 'none') || shippingPolicies[0] || null;
+  selectedPromotion = promotions.find(p => p.id === 'none') || promotions[0] || null;
+}
+
+async function syncCartProducts() {
+  if (cart.length === 0) {
+    return;
+  }
+
+  const products = await ShopAPI.getProducts();
+  let changed = false;
+
+  cart = cart.map(item => {
+    const product = products.find(p => p.id === item.productId);
+    if (!product || product.quantity <= 0) {
+      changed = true;
+      return null;
+    }
+
+    const quantity = Math.min(item.quantity, product.quantity);
+    if (quantity !== item.quantity || item.product !== product) {
+      changed = true;
+    }
+
+    return {
+      productId: product.id,
+      product,
+      quantity
+    };
+  }).filter(Boolean);
+
+  if (changed) {
+    saveCart();
   }
 }
 
@@ -80,7 +118,7 @@ function renderCart() {
           ${index + 1}. ${item.product.name}
         </h4>
         <p style="color: var(--light-grey); font-size: 0.9rem;">
-          ₸${item.product.price.toLocaleString()} × ${item.quantity}
+          ${formatMoney(item.product.price)} × ${item.quantity}
         </p>
       </div>
 
@@ -98,7 +136,7 @@ function renderCart() {
         </div>
 
         <div style="min-width: 120px; text-align: right; color: var(--soviet-red); font-size: 1.2rem; font-weight: bold;">
-          ₸${(item.product.price * item.quantity).toLocaleString()}
+          ${formatMoney(item.product.price * item.quantity)}
         </div>
 
         <button onclick="removeFromCart('${item.productId}')"
@@ -115,11 +153,18 @@ function renderCart() {
 function renderPolicySelectors() {
   const shippingSelect = document.getElementById('shipping-select');
   if (!shippingSelect) return;
+
+  if (shippingPolicies.length === 0) {
+    shippingSelect.disabled = true;
+    shippingSelect.innerHTML = '<option value="none">Нет доступных способов доставки</option>';
+    return;
+  }
+
   shippingSelect.disabled = false;
   shippingSelect.classList.remove('hidden');
   shippingSelect.innerHTML = shippingPolicies.map(shipping => `
     <option value="${shipping.id}">
-      ${shipping.id.includes('pigeon') || shipping.id === 'express' ? '🕊 ' : ''}${shipping.name}
+      ${shipping.name}
     </option>
   `).join('');
   if (selectedShipping) {
@@ -134,8 +179,14 @@ function updateQuantity(productId, newQuantity) {
     removeFromCart(productId);
     return;
   }
+
   const item = cart.find(i => i.productId === productId);
   if (item) {
+    if (newQuantity > item.product.quantity) {
+      alert(`На складе только ${item.product.quantity} шт.`);
+      return;
+    }
+
     item.quantity = newQuantity;
     saveCart();
     renderCart();
@@ -166,53 +217,58 @@ function updateCartCount() {
   if (cartCountEl) cartCountEl.textContent = totalItems;
 }
 
+function formatMoney(value) {
+  return `₸${Math.round(value).toLocaleString()}`;
+}
+
+function resetTotals() {
+  const promoInfo = document.getElementById('promo-info');
+  if (promoInfo) promoInfo.textContent = 'Добавьте товары, чтобы применить скидку.';
+
+  const ids = ['items-total', 'discount-amount', 'tax-amount', 'shipping-cost', 'total-amount'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = id === 'discount-amount' ? '-₸0' : id === 'total-amount' ? '₸0' : '+₸0';
+  });
+
+  const itemsTotal = document.getElementById('items-total');
+  if (itemsTotal) itemsTotal.textContent = '₸0';
+}
+
 // ========== CALCULATE TOTAL ==========
 
 async function calculateTotal() {
   if (cart.length === 0 || !selectedShipping) {
+    resetTotals();
     return;
   }
 
   try {
-    let bestPromotion = promotions[0];
-    let maxDiscount = 0;
-
-    for (const promo of promotions) {
-      const testCheckout = await ShopAPI.checkout(
-        cart,
-        promo.id,
-        selectedTax.id,
-        selectedShipping.id
-      );
-      if (testCheckout.discountAmount > maxDiscount) {
-        maxDiscount = testCheckout.discountAmount;
-        bestPromotion = promo;
-      }
-    }
-
-    selectedPromotion = bestPromotion;
-
     const checkout = await ShopAPI.checkout(
       cart,
-      selectedPromotion.id,
-      selectedTax.id,
+      'auto',
+      selectedTax ? selectedTax.id : 'progressive',
       selectedShipping.id
     );
 
+    selectedPromotion = checkout.appliedPromotion || promotions.find(p => p.id === checkout.promotionId) || null;
+
     const promoInfo = document.getElementById('promo-info');
-    if (selectedPromotion.id === 'none') {
+    if (!selectedPromotion || selectedPromotion.id === 'none') {
       promoInfo.textContent = 'Без скидок (но мы старались).';
     } else {
-      promoInfo.textContent = `Промо: ${selectedPromotion.name} (−₸${checkout.discountAmount.toLocaleString()})`;
+      promoInfo.textContent = `Промо: ${selectedPromotion.name} (−${formatMoney(checkout.discountAmount)})`;
     }
 
-    document.getElementById('items-total').textContent = `₸${checkout.itemsTotal.toLocaleString()}`;
-    document.getElementById('discount-amount').textContent = `-₸${checkout.discountAmount.toLocaleString()}`;
-    document.getElementById('tax-amount').textContent = `+₸${checkout.taxAmount.toLocaleString()}`;
-    document.getElementById('shipping-cost').textContent = `+₸${checkout.shippingCost.toLocaleString()}`;
-    document.getElementById('total-amount').textContent = `₸${checkout.total.toLocaleString()}`;
+    document.getElementById('items-total').textContent = formatMoney(checkout.itemsTotal);
+    document.getElementById('discount-amount').textContent = `-${formatMoney(checkout.discountAmount)}`;
+    document.getElementById('tax-amount').textContent = `+${formatMoney(checkout.taxAmount)}`;
+    document.getElementById('shipping-cost').textContent = `+${formatMoney(checkout.shippingCost)}`;
+    document.getElementById('total-amount').textContent = formatMoney(checkout.total);
   } catch (error) {
     console.error('Error calculating total:', error);
+    alert(error.message || 'Ошибка расчёта заказа.');
   }
 }
 
@@ -394,6 +450,6 @@ function initEventListeners() {
     showPigeonTracking();
     clearCart();
     const cartCountEl = document.getElementById('cart-count');
-    if (cartCountEl) cartCountEl.textContent = '(0)';
+    if (cartCountEl) cartCountEl.textContent = '0';
   });
 }
